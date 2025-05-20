@@ -1,0 +1,12 @@
+numpy  
+torch  
+torchvision  
+matplotlib  
+seaborn  
+sklearn  
+tqdm  
+torchinfo  
+torchviz  
+collections  
+os  
+time
