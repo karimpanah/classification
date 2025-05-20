@@ -1,0 +1,157 @@
+# 🛰️ Satellite Image Classification using EfficientNet-B0
+
+**A transfer learning approach for classifying EuroSAT satellite images, achieving 94.56% test accuracy**
+
+## 📌 Project Highlights
+- **Model**: EfficientNet-B0 with Transfer Learning  
+- **Dataset**: EuroSAT (27,000 images across 10 land-use classes)  
+- **Key Techniques**:
+  - Layer freezing/unfreezing strategy
+  - Advanced Data Augmentation
+  - Dynamic Learning Rate Scheduling (StepLR)
+  - L2 Regularization
+- **Performance**:
+  - **Test Accuracy**: 94.56%
+  - **Best Validation Accuracy**: 95.26%
+  - Training Time: ~45 minutes on GPU
+
+---
+
+## 🌍 Dataset Classes
+1. AnnualCrop  
+2. Forest  
+3. HerbaceousVegetation  
+4. Highway  
+5. Industrial  
+6. Pasture  
+7. PermanentCrop  
+8. Residential  
+9. River  
+10. SeaLake  
+
+---
+
+## ⚙️ Training Hyperparameters
+- **Epochs**: 50  
+- **Batch Size**: 64  
+- **Optimizer**: Adam (learning rate = 0.001, L2 weight decay = 1e-5)  
+- **Learning Rate Scheduler**: StepLR (step size = 5, gamma = 0.5)
+
+---
+
+## 📊 Performance Metrics
+
+| Metric     | Overall | Best Class (Residential) | Worst Class (Highway) |
+|------------|---------|--------------------------|------------------------|
+| Accuracy   | 94.56%  | 98.28%                   | 90.87%                |
+| Precision  | 94.45%  | 97.56%                   | 90.70%                |
+| Recall     | 94.28%  | 99.01%                   | 89.13%                |
+| F1-Score   | 94.35%  | 98.28%                   | 90.87%                |
+
+---
+
+## 📈 Key Visualizations
+
+### 📉 Training & Validation Loss
+Shows the convergence of the model and how well it generalizes.
+![Loss Curve](assets/loss.png)
+
+### 📈 Training & Validation Accuracy
+Demonstrates how classification accuracy improves over epochs.
+![Accuracy Curve](assets/accuracy.png)
+
+### 📊 Learning Rate Schedule
+Displays how the learning rate decreases dynamically using StepLR.
+![Learning Rate](assets/learning_rate.png)
+
+### 🔍 Confusion Matrix
+Visual representation of model predictions across all classes.
+![Confusion Matrix](assets/confusion_matrix.png)
+
+### ❌ Misclassified Samples
+Examples of incorrect predictions for further error analysis.
+![Misclassified Samples](assets/missclassified_images.png)
+
+---
+
+## 🧠 Model Architecture
+
+```python
+model = models.efficientnet_b0(pretrained=True)
+# Freeze all layers except:
+# - Last convolutional block (features[-1])
+# - Classifier layer (modified for 10 classes)
+model.classifier[1] = nn.Linear(1280, 10)
+
+
+🛠️ Installation
+
+pip install torch torchvision torchinfo matplotlib
+
+
+🏃‍♂️ How to Run
+Clone the repository
+git clone https://github.com/karimpanah/classification.git
+cd classification
+
+Download EuroSAT dataset
+
+
+Run training:
+python train.py
+
+
+📂 Project Structure
+/project
+│── /assets            # Visualizations and results
+│── /data              # Dataset loader
+│── /models            # Model definitions
+│── train.py           # Main training script
+│── eval.py            # Evaluation script
+│── requirements.txt   # Dependencies
+
+📈 Key Visualizations
+Training/Validation Loss Curve
+
+Accuracy Progress
+
+Learning Rate Schedule
+
+Confusion Matrix
+![Confusion Matrix](assets/confusion_matrix.png)
+
+
+Misclassified Samples Analysis
+
+
+🧠 Model Architecture
+model = models.efficientnet_b0(pretrained=True)
+
+# Freeze all layers except the last convolutional block and the classifier
+for param in model.features[:-1].parameters():
+    param.requires_grad = False
+
+# Modify the classifier for 10 output classes
+model.classifier[1] = nn.Linear(1280, 10)
+
+
+
+
+
+
+
+
+
+🤝 Contribution
+Contributions are welcome! Please open an issue or submit a PR for:
+
+Additional model architectures
+
+Improved data augmentation
+
+Deployment examples
+
+📜 License
+GNU General Public License v3.0
+
+For more details, please refer to the full code and documentation.
